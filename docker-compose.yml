@@ -1,0 +1,32 @@
+version: '3.4'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Your_password123
+    ports:
+      - "14333:1433"
+    networks:
+      - lms_network
+
+  api:
+    image: lmsapi
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=LMS_DB;User Id=sa;Password=Your_password123;TrustServerCertificate=True
+    depends_on:
+      - sqlserver
+    networks:
+      - lms_network
+
+networks:
+  lms_network:
+    driver: bridge
