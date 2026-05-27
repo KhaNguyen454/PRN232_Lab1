@@ -39,10 +39,10 @@ if (app.Environment.IsDevelopment() || true) // Enable swagger even in non-dev f
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        // ??t RoutePrefix là m?t chu?i r?ng ?? Swagger n?m ngay t?i trang ch? (root URL)
+        // ??t RoutePrefix lï¿½ m?t chu?i r?ng ?? Swagger n?m ngay t?i trang ch? (root URL)
         c.RoutePrefix = string.Empty;
 
-        // ??m b?o v?n gi? l?i c?u hình Endpoint m?c ??nh n?u có
+        // ??m b?o v?n gi? l?i c?u hï¿½nh Endpoint m?c ??nh n?u cï¿½
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "LMS API V1");
     });
 }
@@ -53,4 +53,12 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ApplicationDbContext>();
+    context.Database.Migrate();
+}
+
 app.Run();
+
