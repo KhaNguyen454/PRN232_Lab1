@@ -33,6 +33,8 @@ builder.Services.AddScoped<ICourseService, CourseService>();
 
 var app = builder.Build();
 
+app.UseMiddleware<PRN232.LMS.API.Middlewares.GlobalExceptionMiddleware>();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || true) // Enable swagger even in non-dev for testing
 {

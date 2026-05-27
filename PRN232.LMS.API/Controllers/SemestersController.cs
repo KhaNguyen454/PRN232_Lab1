@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PRN232.LMS.Services.Interfaces;
 using PRN232.LMS.Services.Models.Requests;
 using PRN232.LMS.Services.Models.Responses;
@@ -22,11 +22,7 @@ namespace PRN232.LMS.API.Controllers
         public async Task<IActionResult> GetSemesters([FromQuery] QueryRequest request)
         {
             var result = await _semesterService.GetSemestersAsync(request);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return Ok(result);
         }
 
         // GET: api/semesters/5
@@ -34,15 +30,7 @@ namespace PRN232.LMS.API.Controllers
         public async Task<IActionResult> GetSemester(int id)
         {
             var result = await _semesterService.GetSemesterByIdAsync(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            if (result.Message == "Semester not found.")
-            {
-                return NotFound(result);
-            }
-            return BadRequest(result);
+            return Ok(result);
         }
 
         // POST: api/semesters
@@ -50,11 +38,7 @@ namespace PRN232.LMS.API.Controllers
         public async Task<IActionResult> CreateSemester([FromBody] SemesterDto request)
         {
             var result = await _semesterService.CreateSemesterAsync(request);
-            if (result.Success)
-            {
-                return CreatedAtAction(nameof(GetSemester), new { id = result.Data?.SemesterId }, result);
-            }
-            return BadRequest(result);
+            return CreatedAtAction(nameof(GetSemester), new { id = result.Data?.SemesterId }, result);
         }
 
         // PUT: api/semesters/5
@@ -63,19 +47,11 @@ namespace PRN232.LMS.API.Controllers
         {
             if (id != request.SemesterId)
             {
-                return BadRequest(ApiResponse<SemesterDto>.Fail("ID mismatch."));
+                return BadRequest(ApiResponse<object>.Fail("ID mismatch."));
             }
 
             var result = await _semesterService.UpdateSemesterAsync(id, request);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            if (result.Message == "Semester not found.")
-            {
-                return NotFound(result);
-            }
-            return BadRequest(result);
+            return Ok(result);
         }
 
         // DELETE: api/semesters/5
@@ -83,15 +59,7 @@ namespace PRN232.LMS.API.Controllers
         public async Task<IActionResult> DeleteSemester(int id)
         {
             var result = await _semesterService.DeleteSemesterAsync(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            if (result.Message == "Semester not found.")
-            {
-                return NotFound(result);
-            }
-            return BadRequest(result);
+            return Ok(result);
         }
     }
 }

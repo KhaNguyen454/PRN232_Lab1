@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PRN232.LMS.Services.Interfaces;
 using PRN232.LMS.Services.Models.Requests;
 using PRN232.LMS.Services.Models.Responses;
@@ -22,11 +22,7 @@ namespace PRN232.LMS.API.Controllers
         public async Task<IActionResult> GetStudents([FromQuery] QueryRequest request)
         {
             var result = await _studentService.GetStudentsAsync(request);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return Ok(result);
         }
 
         // GET: api/students/5
@@ -34,26 +30,14 @@ namespace PRN232.LMS.API.Controllers
         public async Task<IActionResult> GetStudent(int id)
         {
             var result = await _studentService.GetStudentByIdAsync(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            if (result.Message == "Student not found.")
-            {
-                return NotFound(result);
-            }
-            return BadRequest(result);
+            return Ok(result);
         }
         // POST: api/students
         [HttpPost]
         public async Task<IActionResult> CreateStudent([FromBody] StudentDto request)
         {
             var result = await _studentService.CreateStudentAsync(request);
-            if (result.Success)
-            {
-                return CreatedAtAction(nameof(GetStudent), new { id = result.Data?.StudentId }, result);
-            }
-            return BadRequest(result);
+            return CreatedAtAction(nameof(GetStudent), new { id = result.Data?.StudentId }, result);
         }
 
         // PUT: api/students/5
@@ -62,19 +46,11 @@ namespace PRN232.LMS.API.Controllers
         {
             if (id != request.StudentId)
             {
-                return BadRequest(ApiResponse<StudentDto>.Fail("ID mismatch."));
+                return BadRequest(ApiResponse<object>.Fail("ID mismatch."));
             }
 
             var result = await _studentService.UpdateStudentAsync(id, request);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            if (result.Message == "Student not found.")
-            {
-                return NotFound(result);
-            }
-            return BadRequest(result);
+            return Ok(result);
         }
 
         // DELETE: api/students/5
@@ -82,15 +58,7 @@ namespace PRN232.LMS.API.Controllers
         public async Task<IActionResult> DeleteStudent(int id)
         {
             var result = await _studentService.DeleteStudentAsync(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            if (result.Message == "Student not found.")
-            {
-                return NotFound(result);
-            }
-            return BadRequest(result);
+            return Ok(result);
         }
     }
 }

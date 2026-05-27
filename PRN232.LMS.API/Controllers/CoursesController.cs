@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PRN232.LMS.Services.Interfaces;
 using PRN232.LMS.Services.Models.Requests;
 using PRN232.LMS.Services.Models.Responses;
@@ -22,11 +22,7 @@ namespace PRN232.LMS.API.Controllers
         public async Task<IActionResult> GetCourses([FromQuery] QueryRequest request)
         {
             var result = await _courseService.GetCoursesAsync(request);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return Ok(result);
         }
 
         // GET: api/courses/5
@@ -34,15 +30,7 @@ namespace PRN232.LMS.API.Controllers
         public async Task<IActionResult> GetCourse(int id)
         {
             var result = await _courseService.GetCourseByIdAsync(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            if (result.Message == "Course not found.")
-            {
-                return NotFound(result);
-            }
-            return BadRequest(result);
+            return Ok(result);
         }
 
         // POST: api/courses
@@ -50,11 +38,7 @@ namespace PRN232.LMS.API.Controllers
         public async Task<IActionResult> CreateCourse([FromBody] CourseDto request)
         {
             var result = await _courseService.CreateCourseAsync(request);
-            if (result.Success)
-            {
-                return CreatedAtAction(nameof(GetCourse), new { id = result.Data?.CourseId }, result);
-            }
-            return BadRequest(result);
+            return CreatedAtAction(nameof(GetCourse), new { id = result.Data?.CourseId }, result);
         }
 
         // PUT: api/courses/5
@@ -63,19 +47,11 @@ namespace PRN232.LMS.API.Controllers
         {
             if (id != request.CourseId)
             {
-                return BadRequest(ApiResponse<CourseDto>.Fail("ID mismatch."));
+                return BadRequest(ApiResponse<object>.Fail("ID mismatch."));
             }
 
             var result = await _courseService.UpdateCourseAsync(id, request);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            if (result.Message == "Course not found.")
-            {
-                return NotFound(result);
-            }
-            return BadRequest(result);
+            return Ok(result);
         }
 
         // DELETE: api/courses/5
@@ -83,15 +59,7 @@ namespace PRN232.LMS.API.Controllers
         public async Task<IActionResult> DeleteCourse(int id)
         {
             var result = await _courseService.DeleteCourseAsync(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            if (result.Message == "Course not found.")
-            {
-                return NotFound(result);
-            }
-            return BadRequest(result);
+            return Ok(result);
         }
     }
 }

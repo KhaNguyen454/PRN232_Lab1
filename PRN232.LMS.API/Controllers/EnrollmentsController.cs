@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PRN232.LMS.Services.Interfaces;
 using PRN232.LMS.Services.Models.Requests;
 using PRN232.LMS.Services.Models.Responses;
@@ -22,11 +22,7 @@ namespace PRN232.LMS.API.Controllers
         public async Task<IActionResult> GetEnrollments([FromQuery] QueryRequest request)
         {
             var result = await _enrollmentService.GetEnrollmentsAsync(request);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return Ok(result);
         }
 
         // GET: api/enrollments/5
@@ -34,26 +30,14 @@ namespace PRN232.LMS.API.Controllers
         public async Task<IActionResult> GetEnrollment(int id)
         {
             var result = await _enrollmentService.GetEnrollmentByIdAsync(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            if (result.Message == "Enrollment not found.")
-            {
-                return NotFound(result);
-            }
-            return BadRequest(result);
+            return Ok(result);
         }
         // POST: api/enrollments
         [HttpPost]
         public async Task<IActionResult> CreateEnrollment([FromBody] EnrollmentDto request)
         {
             var result = await _enrollmentService.CreateEnrollmentAsync(request);
-            if (result.Success)
-            {
-                return CreatedAtAction(nameof(GetEnrollment), new { id = result.Data?.EnrollmentId }, result);
-            }
-            return BadRequest(result);
+            return CreatedAtAction(nameof(GetEnrollment), new { id = result.Data?.EnrollmentId }, result);
         }
 
         // PUT: api/enrollments/5
@@ -62,19 +46,11 @@ namespace PRN232.LMS.API.Controllers
         {
             if (id != request.EnrollmentId)
             {
-                return BadRequest(ApiResponse<EnrollmentDto>.Fail("ID mismatch."));
+                return BadRequest(ApiResponse<object>.Fail("ID mismatch."));
             }
 
             var result = await _enrollmentService.UpdateEnrollmentAsync(id, request);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            if (result.Message == "Enrollment not found.")
-            {
-                return NotFound(result);
-            }
-            return BadRequest(result);
+            return Ok(result);
         }
 
         // DELETE: api/enrollments/5
@@ -82,15 +58,7 @@ namespace PRN232.LMS.API.Controllers
         public async Task<IActionResult> DeleteEnrollment(int id)
         {
             var result = await _enrollmentService.DeleteEnrollmentAsync(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            if (result.Message == "Enrollment not found.")
-            {
-                return NotFound(result);
-            }
-            return BadRequest(result);
+            return Ok(result);
         }
     }
 }
